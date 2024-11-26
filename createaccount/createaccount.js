@@ -1,33 +1,33 @@
 // createaccount.js
-document.getElementById('createForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent form submission behavior
-  
-    const newUsername = document.getElementById('newUsername').value.trim();
-    const newPassword = document.getElementById('newPassword').value.trim();
-    const message = document.getElementById('message');
-  
-    if (!newUsername || !newPassword) {
-      message.style.color = 'red';
-      message.textContent = 'Please fill out both fields.';
-      return;
+document.getElementById('createForm').addEventListener('submit', (event) => {
+  event.preventDefault();
+
+  const newUsername = document.getElementById('newUsername').value;
+  const newPassword = document.getElementById('newPassword').value;
+  const role = document.getElementById('role').value;
+  const message = document.getElementById('message');
+
+  if (!role) {
+    message.style.color = 'red';
+    message.textContent = 'Please select a role.';
+    return;
+  }
+
+  if (window.accounts.find((acc) => acc.username === newUsername)) {
+    message.style.color = 'red';
+    message.textContent = 'Username already exists. Please choose another.';
+    return;
+  }
+
+  window.accounts.push({ username: newUsername, password: newPassword, role });
+  message.style.color = 'green';
+  message.textContent = 'Account created successfully! Redirecting...';
+
+  setTimeout(() => {
+    if (role === 'teacher') {
+      window.location.href = '/workspaces/teacher-dashboard/teacher-dashboard.html';
+    } else if (role === 'student') {
+      window.location.href = '/workspaces/student-dashboard/student-dashboard.html';
     }
-  
-    // Check if the username already exists
-    if (window.accounts.some(acc => acc.username === newUsername)) {
-      message.style.color = 'red';
-      message.textContent = 'Username already exists. Please choose another.';
-    } else {
-      // Add the new account to the accounts array
-      window.accounts.push({ username: newUsername, password: newPassword });
-      message.style.color = 'green';
-      message.textContent = 'Account created successfully! You can now login.';
-      
-      // Optionally log the updated accounts array for debugging
-      console.log('Updated accounts:', window.accounts);
-  
-      // Clear the form fields
-      document.getElementById('newUsername').value = '';
-      document.getElementById('newPassword').value = '';
-    }
-  });
-  
+  }, 1000);
+});

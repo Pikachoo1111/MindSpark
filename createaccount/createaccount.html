@@ -14,14 +14,19 @@
       <input type="text" id="newUsername" required>
       <label for="newPassword">New Password:</label>
       <input type="password" id="newPassword" required>
+      <label for="role">Choose Your Role:</label>
+      <select id="role" required>
+        <option value="" disabled selected>Select your role</option>
+        <option value="teacher">Teacher</option>
+        <option value="student">Student</option>
+      </select>
       <button type="submit">Create Account</button>
     </form>
     <p id="message"></p>
     <p>Already have an account? <a href="../signin/signin.html">Login here</a>.</p>
   </div>
 
-  <!-- Ensure accounts.js is loaded before createaccount.js -->
-  <script src="../accounts.js"></script> <!-- Contains window.accounts -->
-  <script src="createaccount.js"></script> <!-- Main account creation logic -->
+  <script src="../accounts.js"></script> 
+  <script src="createaccount.js"></script> 
 </body>
 </html>

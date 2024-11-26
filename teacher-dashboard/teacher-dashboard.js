@@ -28,4 +28,3 @@ function openLessonPlanner() {
 function openGradebook() {
   alert('Gradebook is under construction.');
 }
-//hi
