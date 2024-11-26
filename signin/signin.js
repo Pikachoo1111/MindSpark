@@ -1,26 +1,35 @@
 // Preprogrammed accounts
 const accounts = [
-    { username: 'user1', password: 'password1' },
-    { username: 'user2', password: 'password2' },
-    { username: 'joel', password: 'password3'}
-  ];
+  { username: 'teacher1', password: 'password1', role: 'teacher' },
+  { username: 'student1', password: 'password2', role: 'student' },
+];
+
   
-  document.getElementById('loginForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent form submission
+  document.getElementById('loginForm').addEventListener('submit', function (event) {
+    event.preventDefault();
   
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
     const message = document.getElementById('message');
   
-    // Check credentials
-    const account = accounts.find(acc => acc.username === username && acc.password === password);
+    const account = accounts.find(
+      (acc) => acc.username === username && acc.password === password
+    );
   
     if (account) {
       message.style.color = 'green';
-      message.textContent = 'Login successful!';
+      message.textContent = `Login successful! Welcome, ${account.role}.`;
+  
+      // Redirect to dashboard based on role
+      if (account.role === 'teacher') {
+        window.location.href = 'teacher-dashboard.html';
+      } else if (account.role === 'student') {
+        window.location.href = 'student-dashboard.html';
+      }
     } else {
       message.style.color = 'red';
       message.textContent = 'Invalid username or password.';
     }
   });
+  
   
