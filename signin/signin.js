@@ -1,10 +1,4 @@
-// Preprogrammed accounts
-const accounts = [
-  { username: 'teacher1', password: 'password1', role: 'teacher' },
-  { username: 'student1', password: 'password2', role: 'student' },
-];
-
-  
+// Preprogrammed accounts  
   document.getElementById('loginForm').addEventListener('submit', function (event) {
     event.preventDefault();
   
