@@ -1,7 +1,8 @@
 // Preprogrammed accounts
 const accounts = [
     { username: 'user1', password: 'password1' },
-    { username: 'user2', password: 'password2' }
+    { username: 'user2', password: 'password2' },
+    { username: 'joel', password: 'password3'}
   ];
   
   document.getElementById('loginForm').addEventListener('submit', function(event) {
