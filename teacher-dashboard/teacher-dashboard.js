@@ -22,7 +22,8 @@ function displayClassrooms() {
 }
 
 function openLessonPlanner() {
-  alert('Lesson Planner is under construction.');
+  //go to lesson-planner.html
+  window.location.href = 'lesson-planner/lesson-planner.html';
 }
 
 function openGradebook() {
