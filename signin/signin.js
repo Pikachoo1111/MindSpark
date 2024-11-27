@@ -16,9 +16,9 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
   
       // Redirect to dashboard based on role
       if (account.role === 'teacher') {
-        window.location.href = 'teacher-dashboard.html';
+        window.location.href = '../teacher-dashboard/teacher-dashboard.html';
       } else if (account.role === 'student') {
-        window.location.href = 'student-dashboard.html';
+        window.location.href = '../student-dashboard/student-dashboard.html';
       }
     } else {
       message.style.color = 'red';

@@ -25,9 +25,9 @@ document.getElementById('createForm').addEventListener('submit', (event) => {
 
   setTimeout(() => {
     if (role === 'teacher') {
-      window.location.href = '/workspaces/teacher-dashboard/teacher-dashboard.html';
+      window.location.href = '/teacher-dashboard/teacher-dashboard.html';
     } else if (role === 'student') {
-      window.location.href = '/workspaces/student-dashboard/student-dashboard.html';
+      window.location.href = '/student-dashboard/student-dashboard.html';
     }
   }, 1000);
 });
