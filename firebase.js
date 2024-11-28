@@ -73,5 +73,7 @@ const login = () => {
     })
 }
 
-
-
+const createClassroom = () => {
+    const email = auth.currentUser.email;
+    // const classCode = 
+}
