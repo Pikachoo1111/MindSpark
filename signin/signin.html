@@ -10,15 +10,19 @@
   <div class="login-container">
     <h2>Login</h2>
     <form id="loginForm">
-      <label for="username">Username:</label>
-      <input type="text" id="username" required>
+      <label for="email" id="emailLabel">Email:</label>
+      <input type="email" id="email" required>
       <label for="password">Password:</label>
       <input type="password" id="password" required>
-      <button type="submit">Login</button>
+      <button type="button" onclick="login()">Login</button>
     </form>
     <p id="message"></p>
     <p>Don't have an account? <a href="../createaccount/createaccount.html">Create one here</a>.</p>
   </div>
+  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
+  <script src="../firebase.js"></script>
   <script src = ../accounts.js></script>
   <script src="/workspaces/ImpactXDraftRepo/signin/signin.js"></script>
 </body>

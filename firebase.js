@@ -25,3 +25,16 @@ const register = () => {
         console.log(error.message)
     })
 }
+const login = () => {
+    const email = document.getElementById('email').value
+    const password = document.getElementById('password').value
+    auth.signInWithEmailAndPassword(email, password)
+    .then((res) => {
+        console.log(res.user)
+    })
+    .catch((error) => {
+        alert(error.message)
+        console.log(error.code)
+        console.log(error.message)
+    })
+}
