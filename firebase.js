@@ -14,10 +14,29 @@ const auth = firebaseApp.auth();
 const register = () => {
     const email = document.getElementById('email').value
     const password = document.getElementById('password').value
+    const role = document.getElementById('role').value
+
+    
 
     auth.createUserWithEmailAndPassword(email, password)
     .then((res) => {
         console.log(res.user)
+            db.collection('users')
+        .add({
+            email: email,
+            role: role
+        })
+        .then((docRef) => {
+            console.log('Email:Role pair written with ID: ', docRef.id)
+            if(role == 'teacher') {
+                window.location.href = '../../teacher-dashboard/teacher-dashboard.html';
+            } else {
+                window.location.href = '../../student-dashboard/student-dashboard.html';
+            }
+        })
+        .catch((error) => {
+            console.error('Error adding document: ', error)
+        })
     })
     .catch((error) => {
         alert(error.message)
