@@ -16,10 +16,11 @@ async function generateContent() {
 
     // Fetch lesson content from OpenAI
     try {
-        const response = await fetchOpenAIResponse(inputPrompt);
-        if (response) {
-            console.log("Generated Lesson Content:", response);
-            alert("Lesson content generated successfully. Check the console for details.");
+        const lessonContent = await fetchOpenAIResponse(inputPrompt);
+        if (lessonContent) {
+            console.log("Generated Lesson Content:", lessonContent);
+            saveLessonToFirestore(lessonName, lessonObjective, lessonDuration, lessonGrade, lessonContent);
+            alert("Lesson created and saved successfully!");
         } else {
             alert("Failed to generate lesson content.");
         }
@@ -62,3 +63,74 @@ async function fetchOpenAIResponse(prompt) {
         return null;
     }
 }
+
+// Save lesson to Firestore
+async function saveLessonToFirestore(name, objective, duration, grade, content) {
+    const teacherEmail = auth.currentUser.email; // Get the current teacher's email
+
+    try {
+        await db.collection("lessons").add({
+            teacher: teacherEmail,
+            name,
+            objective,
+            duration,
+            grade,
+            content,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+        console.log("Lesson saved successfully!");
+    } catch (error) {
+        console.error("Error saving lesson to Firestore:", error);
+    }
+}
+
+// Fetch and display lessons for the teacher
+async function displayTeacherLessons() {
+    const teacherEmail = auth.currentUser.email; // Get the current teacher's email
+    const lessonsDiv = document.getElementById("saved-lessons");
+    lessonsDiv.innerHTML = "<h3>My Lessons</h3>";
+
+    try {
+        const querySnapshot = await db.collection("lessons").where("teacher", "==", teacherEmail).get();
+        querySnapshot.forEach((doc) => {
+            const lesson = doc.data();
+            const lessonDiv = document.createElement("div");
+            lessonDiv.className = "lesson-card";
+            lessonDiv.innerHTML = `
+                <h4>${lesson.name}</h4>
+                <p><strong>Grade:</strong> ${lesson.grade}</p>
+                <p><strong>Duration:</strong> ${lesson.duration} minutes</p>
+                <p><strong>Objective:</strong> ${lesson.objective}</p>
+                <button onclick="viewLesson('${doc.id}')">View Lesson</button>
+            `;
+            lessonsDiv.appendChild(lessonDiv);
+        });
+    } catch (error) {
+        console.error("Error fetching lessons:", error);
+    }
+}
+
+// View a specific lesson
+async function viewLesson(lessonId) {
+    try {
+        const lessonDoc = await db.collection("lessons").doc(lessonId).get();
+        if (lessonDoc.exists) {
+            const lesson = lessonDoc.data();
+            alert(`Lesson Content:\n\n${lesson.content}`);
+        } else {
+            alert("Lesson not found.");
+        }
+    } catch (error) {
+        console.error("Error viewing lesson:", error);
+    }
+}
+
+// Initialize the lessons display when the page loads
+auth.onAuthStateChanged((user) => {
+    if (user) {
+        displayTeacherLessons();
+    } else {
+        window.location.href = "../../signin/signin.html"; // Redirect to login if not authenticated
+    }
+});
+
