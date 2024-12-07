@@ -73,7 +73,33 @@ const login = () => {
     })
 }
 
-const createClassroom = () => {
-    const email = auth.currentUser.email;
-    // const classCode = 
+const uploadClassroom = (teacher, name, code, students) => {
+    /*
+    Stuff needed for creating a classroom:
+    - Teacher's email
+    - Classroom name
+    - Class code
+    - Students in class
+    */
+    db.collection('classrooms')
+    .add({
+        teacher: teacher,
+        name: name,
+        code: code,
+        students: students
+    })
 }
+window.uploadClassroom = uploadClassroom;
+const lookUpUser = (email) => {
+    db.collection("users").where("email", "==", email)
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                return {email: doc.data().email, role: doc.data().role}
+            });
+        })
+        .catch((error) => {
+            return null
+        });
+}
+
