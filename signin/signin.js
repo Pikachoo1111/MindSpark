@@ -19,9 +19,9 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
     // Redirect to dashboard based on role
     setTimeout(() => {
       if (account.role === 'teacher') {
-        window.location.href = '/workspaces/ImpactXDraftRepo/teacher-dashboard/teacher-dashboard.html';
+        window.location.href = '.../teacher-dashboard/teacher-dashboard.html';
       } else if (account.role === 'student') {
-        window.location.href = '/workspaces/ImpactXDraftRepo/student-dashboard/student-dashboard.html';
+        window.location.href = '.../student-dashboard/student-dashboard.html';
       }
     }, 1000);
   } else {
