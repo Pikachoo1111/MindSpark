@@ -1,67 +1,54 @@
-let classrooms = [];
-
 function createClassroom() {
-  const code = generateUniqueCode();
-  const teacher = firebase.auth().currentUser.email;
   const name = prompt('Enter classroom name:');
-  const students = prompt('Enter student emails separated by commas:').split(',');
-  //check that all students are valid students
-  //if not, alert and return
-  for (let i = 0; i < students.length; i++) {
-    db.collection("users")
-      .where("email", "==", students[i])
-      .get()
-      .then(querySnapshot => {
-        if (querySnapshot.empty) {
-          alert('One or more students are not valid students.');
-          return;
-        }
-      })
-      .catch(error => {
-        console.error("Error checking student:", error);
-      });
+  if (!name) {
+    alert('Classroom name cannot be empty.');
+    return;
   }
-  
-  window.createClassroom(teacher, name, code, students);
-  classrooms.push(code);
-  alert(`Classroom created! Code: ${code}`);
-  displayClassrooms();
+
+  const code = generateUniqueCode();
+  const teacher = auth.currentUser.email; // Authenticated teacher's email
+  const students = prompt('Enter student emails separated by commas (optional):').split(',').map(email => email.trim()).filter(email => email);
+
+  // Upload classroom to Firestore
+  uploadClassroom(teacher, name, code, students)
+    .then(() => {
+      alert(`Classroom "${name}" created successfully! Code: ${code}`);
+      displayClassrooms(); // Refresh classrooms list
+    })
+    .catch((error) => {
+      console.error("Error creating classroom: ", error);
+    });
+}
+
+function displayClassrooms() {
+  const teacher = auth.currentUser.email; // Authenticated teacher's email
+  const classroomsDiv = document.getElementById('classrooms');
+  classroomsDiv.innerHTML = '<h3>Your Classrooms</h3>';
+
+  db.collection('classrooms').where('teacher', '==', teacher)
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        const classroom = doc.data();
+        const div = document.createElement('div');
+        div.textContent = `${classroom.name} (Code: ${classroom.code})`;
+        classroomsDiv.appendChild(div);
+      });
+    })
+    .catch((error) => {
+      console.error("Error fetching classrooms: ", error);
+    });
 }
 
 function generateUniqueCode() {
   return Math.random().toString(36).substr(2, 8).toUpperCase();
 }
 
-function displayClassrooms() {
-  const classroomsDiv = document.getElementById('classrooms');
-  classroomsDiv.innerHTML = '<h3>Your Classrooms</h3>';
-  classrooms.forEach((code) => {
-    const div = document.createElement('div');
-    div.textContent = `Classroom Code: ${codes}`;
-    classroomsDiv.appendChild(div);
-  });
-}
-//Attach displayClassrooms to window so it can be called from firebase.js
-window.displayClassrooms = displayClassrooms;
-function openLessonPlanner() {
-  //go to lesson-planner.html
-  window.location.href = 'lesson-planner/lesson-planner.html';
-}
-
-function openGradebook() {
-  alert('Gradebook is under construction.');
-}
-
-function checkAllStudents() {
-  db.collection("users")
-    .where("role", "==", "student")
-    .get()
-    .then(querySnapshot => {
-      querySnapshot.forEach(doc => {
-        console.log(doc.id, " => ", doc.data());
-      });
-    })
-    .catch(error => {
-      console.error("Error getting documents: ", error);
-    });
-}
+// Initialize the classroom display when the dashboard loads
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    displayClassrooms();
+  } else {
+    window.location.href = '../../signin/signin.html'; // Redirect to login if not authenticated
+  }
+});
