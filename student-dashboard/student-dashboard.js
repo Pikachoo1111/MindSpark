@@ -1,3 +1,5 @@
+import { auth, db } from '../firebase';
+
 function joinClassroom() {
   const code = document.getElementById('classroomCode').value.trim();
   if (!code) {
@@ -61,12 +63,33 @@ function displayStudentClassrooms() {
     });
 }
 
-// Initialize the student's classroom display when the dashboard loads
+function displayStudentTodoList() {
+  const studentEmail = auth.currentUser.email;
+  const todoList = document.getElementById("student-todo-list");
+  todoList.innerHTML = "";
+
+  db.collection("todos")
+    .where("student", "==", studentEmail)
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        const task = doc.data();
+        const listItem = document.createElement("li");
+        listItem.textContent = task.description;
+        todoList.appendChild(listItem);
+      });
+    })
+    .catch((error) => {
+      console.error("Error fetching student todos: ", error);
+    });
+}
+
+// Initialize the student's classroom display and to-do list when the dashboard loads
 auth.onAuthStateChanged((user) => {
   if (user) {
     displayStudentClassrooms();
+    displayStudentTodoList();
   } else {
-    window.location.href = '../../signin/signin.html'; // Redirect to login if not authenticated
+    window.location.href = "../../signin/signin.html"; // Redirect to login if not authenticated
   }
 });
-

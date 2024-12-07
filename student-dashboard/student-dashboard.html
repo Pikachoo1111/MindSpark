@@ -1,26 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Dashboard</title>
-  <link rel="stylesheet" href="student-dashboard.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student   
+ Dashboard</title>
+    <link rel="stylesheet" href="student-dashboard.css">
 </head>
 <body>
-  <div class="dashboard-container">
-    <h1>Welcome, Student!</h1>
-    <input type="text" id="classroomCode" placeholder="Enter Classroom Code">
-    <button onclick="joinClassroom()">Join Classroom</button>
-    <div id="reminders">
-      <h3>Your Classrooms</h3>
-      <!-- Student's enrolled classrooms will be displayed here -->
+    <div class="dashboard-container">   
+
+        <h1>Welcome, Student!</h1>
+        <input type="text" id="classroomCode" placeholder="Enter Classroom Code">
+        <button onclick="joinClassroom()">Join Classroom</button>
+        <div id="reminders">
+            <h3>Your Classrooms</h3>
+        </div>
+        <h2>Your To-Do List</h2>
+        <ul id="student-todo-list"></ul>
     </div>
-  </div>
-  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
-  <script src="../firebase.js"></script>
-  <script src="student-dashboard.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
+    <script src="../firebase.js"></script>
+    <script src="student-dashboard.js"></script>
 </body>
 </html>
+
 
