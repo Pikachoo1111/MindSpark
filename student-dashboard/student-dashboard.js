@@ -93,3 +93,51 @@ auth.onAuthStateChanged((user) => {
     window.location.href = "../../signin/signin.html"; // Redirect to login if not authenticated
   }
 });
+// Fetch and display the to-do list for the logged-in student
+async function displayToDoList() {
+  const studentEmail = auth.currentUser.email; // Authenticated student's email
+  const todoListDiv = document.getElementById('todo-list');
+  todoListDiv.innerHTML = "";
+
+  try {
+      const querySnapshot = await db.collection('todos')
+          .where('student', '==', studentEmail)
+          .get();
+
+      querySnapshot.forEach((doc) => {
+          const task = doc.data();
+          const taskId = doc.id;
+          const div = document.createElement('div');
+          div.className = "task-item";
+          div.innerHTML = `
+              <input type="checkbox" id="${taskId}" ${task.completed ? "checked" : ""} 
+                  onchange="toggleTaskCompletion('${taskId}', this.checked)">
+              <label for="${taskId}">${task.task}</label>
+          `;
+          todoListDiv.appendChild(div);
+      });
+  } catch (error) {
+      console.error("Error fetching to-do list:", error);
+  }
+}
+
+// Toggle task completion
+async function toggleTaskCompletion(taskId, isCompleted) {
+  try {
+      await db.collection('todos').doc(taskId).update({
+          completed: isCompleted,
+      });
+      alert("Task updated successfully!");
+  } catch (error) {
+      console.error("Error updating task completion:", error);
+  }
+}
+
+// Initialize the to-do list display
+auth.onAuthStateChanged((user) => {
+  if (user) {
+      displayToDoList();
+  } else {
+      window.location.href = "../../signin/signin.html"; // Redirect if not authenticated
+  }
+});

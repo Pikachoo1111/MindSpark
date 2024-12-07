@@ -106,3 +106,61 @@ function populateStudentSelect() {
     select.appendChild(option);
   });
 }
+// Assign a task to a student
+async function assignTask() {
+  const studentEmail = document.getElementById('student-email').value.trim();
+  const taskDescription = document.getElementById('task').value.trim();
+
+  if (!studentEmail || !taskDescription) {
+      alert("Please fill out both fields.");
+      return;
+  }
+
+  const teacherEmail = auth.currentUser.email; // Authenticated teacher's email
+
+  try {
+      await db.collection('todos').add({
+          task: taskDescription,
+          assignedBy: teacherEmail,
+          student: studentEmail,
+          completed: false,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+      alert("Task assigned successfully!");
+      displayAssignedTasks(); // Refresh the assigned tasks list
+  } catch (error) {
+      console.error("Error assigning task:", error);
+  }
+}
+
+// Display tasks assigned by the teacher
+async function displayAssignedTasks() {
+  const teacherEmail = auth.currentUser.email; // Authenticated teacher's email
+  const assignedTasksDiv = document.getElementById('assigned-tasks');
+  assignedTasksDiv.innerHTML = "<h4>Tasks Assigned</h4>";
+
+  try {
+      const querySnapshot = await db.collection('todos')
+          .where('assignedBy', '==', teacherEmail)
+          .get();
+
+      querySnapshot.forEach((doc) => {
+          const task = doc.data();
+          const div = document.createElement('div');
+          div.className = "task-item";
+          div.textContent = `${task.task} (Assigned to: ${task.student})`;
+          assignedTasksDiv.appendChild(div);
+      });
+  } catch (error) {
+      console.error("Error fetching assigned tasks:", error);
+  }
+}
+
+// Initialize the tasks display
+auth.onAuthStateChanged((user) => {
+  if (user) {
+      displayAssignedTasks();
+  } else {
+      window.location.href = "../../signin/signin.html"; // Redirect if not authenticated
+  }
+});
