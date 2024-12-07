@@ -57,4 +57,126 @@ body {
     color: red;
     font-size: 14px;
   }
-  
+  /* Container for the dog */
+.dog-griddy {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  height: 150px;
+  animation: griddy-dance 2s infinite ease-in-out;
+}
+
+/* Dog's body */
+.dog-body {
+  position: relative;
+  background-color: brown;
+  width: 100px;
+  height: 60px;
+  border-radius: 50px;
+  margin: 0 auto;
+  top: 20px;
+}
+
+/* Dog's head */
+.dog-head {
+  position: absolute;
+  top: -30px;
+  left: 20px;
+  width: 60px;
+  height: 60px;
+  background-color: brown;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.dog-ears {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: brown;
+  border-radius: 50%;
+  top: -10px;
+}
+
+.dog-ears:nth-child(1) {
+  left: 5px;
+}
+
+.dog-ears:nth-child(2) {
+  right: 5px;
+}
+
+.dog-face {
+  position: absolute;
+  background-color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  top: 15px;
+  left: 15px;
+}
+
+/* Dog's legs */
+.dog-legs {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.dog-legs::before,
+.dog-legs::after {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 40px;
+  background-color: brown;
+  border-radius: 20%;
+  animation: griddy-legs 0.4s infinite alternate;
+}
+
+/* Dog's tail */
+.dog-tail {
+  position: absolute;
+  top: 10px;
+  right: -20px;
+  width: 20px;
+  height: 10px;
+  background-color: brown;
+  border-radius: 10px 50% 50% 10px;
+  transform-origin: left center;
+  animation: tail-wag 0.5s infinite alternate;
+}
+
+/* Griddy animation for the whole container */
+@keyframes griddy-dance {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0) rotate(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-10px) rotate(-10deg);
+  }
+}
+
+/* Griddy legs animation */
+@keyframes griddy-legs {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-20deg);
+  }
+}
+
+/* Tail wagging animation */
+@keyframes tail-wag {
+  0%, 100% {
+    transform: rotate(15deg);
+  }
+  50% {
+    transform: rotate(-15deg);
+  }
+}
