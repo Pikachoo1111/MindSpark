@@ -94,6 +94,7 @@ auth.onAuthStateChanged((user) => {
   }
 });
 // Fetch and display the to-do list for the logged-in student
+// Fetch and display the to-do list for the logged-in student
 async function displayToDoList() {
   const studentEmail = auth.currentUser.email; // Authenticated student's email
   const todoListDiv = document.getElementById('todo-list');
@@ -112,7 +113,7 @@ async function displayToDoList() {
           div.innerHTML = `
               <input type="checkbox" id="${taskId}" ${task.completed ? "checked" : ""} 
                   onchange="toggleTaskCompletion('${taskId}', this.checked)">
-              <label for="${taskId}">${task.task}</label>
+              <label for="${taskId}">${task.task} (Due: ${task.dueDate})</label>
           `;
           todoListDiv.appendChild(div);
       });

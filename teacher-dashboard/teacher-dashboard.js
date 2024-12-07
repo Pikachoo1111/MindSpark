@@ -106,13 +106,14 @@ function populateStudentSelect() {
     select.appendChild(option);
   });
 }
-// Assign a task to a student
+// Assign a task to a student with a due date
 async function assignTask() {
   const studentEmail = document.getElementById('student-email').value.trim();
   const taskDescription = document.getElementById('task').value.trim();
+  const dueDate = document.getElementById('due-date').value;
 
-  if (!studentEmail || !taskDescription) {
-      alert("Please fill out both fields.");
+  if (!studentEmail || !taskDescription || !dueDate) {
+      alert("Please fill out all fields.");
       return;
   }
 
@@ -123,6 +124,7 @@ async function assignTask() {
           task: taskDescription,
           assignedBy: teacherEmail,
           student: studentEmail,
+          dueDate,
           completed: false,
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       });
@@ -148,7 +150,7 @@ async function displayAssignedTasks() {
           const task = doc.data();
           const div = document.createElement('div');
           div.className = "task-item";
-          div.textContent = `${task.task} (Assigned to: ${task.student})`;
+          div.textContent = `${task.task} (Due: ${task.dueDate}, Assigned to: ${task.student}, Completed: ${task.completed ? "Yes" : "No"})`;
           assignedTasksDiv.appendChild(div);
       });
   } catch (error) {
@@ -156,10 +158,29 @@ async function displayAssignedTasks() {
   }
 }
 
-// Initialize the tasks display
+// Notify teacher of completed tasks
+function setupCompletionNotifications() {
+  const teacherEmail = auth.currentUser.email; // Authenticated teacher's email
+
+  db.collection('todos')
+      .where('assignedBy', '==', teacherEmail)
+      .onSnapshot((querySnapshot) => {
+          querySnapshot.docChanges().forEach((change) => {
+              if (change.type === 'modified') {
+                  const task = change.doc.data();
+                  if (task.completed) {
+                      alert(`Task Completed: "${task.task}" by ${task.student}`);
+                  }
+              }
+          });
+      });
+}
+
+// Initialize tasks and notifications
 auth.onAuthStateChanged((user) => {
   if (user) {
       displayAssignedTasks();
+      setupCompletionNotifications();
   } else {
       window.location.href = "../../signin/signin.html"; // Redirect if not authenticated
   }
