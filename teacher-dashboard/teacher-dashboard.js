@@ -51,7 +51,6 @@ function openGradebook() {
 function openLessonPlanner() {
   window.location.href = "../teacher-dashboard/lesson-planner/lesson-planner.html";
 }
-//random chngae
 function generateUniqueCode() {
   return Math.random().toString(36).substr(2, 8).toUpperCase();
 }
