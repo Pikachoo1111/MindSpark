@@ -47,9 +47,9 @@ function displayClassrooms() {
 function openGradebook() {
   window.location.href = "../gradebook/gradebook.html";
 }
-
+//please dont edit path, is working
 function openLessonPlanner() {
-  window.location.href = "../lesson-planner/lesson-planner.html";
+  window.location.href = "../teacher-dashboard/lesson-planner/lesson-planner.html";
 }
 
 function generateUniqueCode() {
