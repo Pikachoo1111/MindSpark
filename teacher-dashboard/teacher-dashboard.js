@@ -52,3 +52,11 @@ auth.onAuthStateChanged((user) => {
     window.location.href = '../../signin/signin.html'; // Redirect to login if not authenticated
   }
 });
+
+function openGradebook() {
+  window.location.href = '../gradebook/gradebook.html';
+}
+
+function openLessonPlanner() {
+  window.location.href = '../teacher-dashboard/lesson-planner/lesson-planner.html';
+}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="lesson-planner.css">
+    <title>Lesson Planner</title>
+</head>
+<body>
+    <h1>Lesson Planner</h1>
+    <form>
+        <label for="lesson-name">Lesson Name</label>
+        <input type="text" id="lesson-name" name="lesson-name" required>
+
+        <label for="lesson-objective">Lesson Objective</label>
+        <textarea id="lesson-objective" name="lesson-objective" rows="4" required></textarea>
+
+        <label for="lesson-duration">Lesson Duration (minutes)</label>
+        <input type="number" id="lesson-duration" name="lesson-duration" required>
+
+        <label for="lesson-grade">Grade</label>
+        <select id="lesson-grade" name="lesson-grade" required>
+            <option value="">Select Grade</option>
+            <option value="kindergarten">Kindergarten</option>
+            <option value="1">1st Grade</option>
+            <option value="2">2nd Grade</option>
+            <option value="3">3rd Grade</option>
+            <option value="4">4th Grade</option>
+            <option value="5">5th Grade</option>
+            <option value="6">6th Grade</option>
+            <option value="7">7th Grade</option>
+            <option value="8">8th Grade</option>
+            <option value="9">9th Grade</option>
+            <option value="10">10th Grade</option>
+            <option value="11">11th Grade</option>
+            <option value="12">12th Grade</option>
+        </select>
+
+        <button type="submit" onClick="generateContent()">Submit</button>
+    </form>
+    <script src = "lesson-planner.js"></script>
+</body>
+</html>
