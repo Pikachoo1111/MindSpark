@@ -30,7 +30,7 @@ async function generateContent() {
 }
 
 async function fetchOpenAIResponse(prompt) {
-    const apiKey = 'sk-proj-your-api-key'; // Replace with your actual OpenAI API key
+    const apiKey = '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'; // Replace with your actual OpenAI API key
     const apiUrl = 'https://api.openai.com/v1/chat/completions';
 
     const requestBody = {
