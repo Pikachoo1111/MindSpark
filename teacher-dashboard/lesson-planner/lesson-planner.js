@@ -22,6 +22,7 @@ function fetchOpenAIResponseSync(prompt) {
     };
 
     try {
+        console.log("Sending API request...");
         const xhr = new XMLHttpRequest();
         xhr.open("POST", apiUrl, false); // Third parameter 'false' makes it synchronous
 
