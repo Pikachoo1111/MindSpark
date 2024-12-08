@@ -29,19 +29,25 @@
     <script src="teacher-dashboard.js"></script>
     <div id="todo-section">
         <h3>Assign To-Do List</h3>
-        <label for="student-email">Student Email: </label>
-        <input type="email" id="student-email" placeholder="Enter student's email"><br><br>
-        <label for="task">Task: </label>
-        <input id="task" placeholder="Enter the task" type="text"
-        oninput="this.size = this.value.length"></input><br>
-        <label for="due-date">Due Date: </label>
-        <input type="date" id="due-date">
+        <label for="student-email">Student Email</label>
+        <input type="email" id="student-email" placeholder="Enter student's email" />
+      
+        <label for="task">Task</label>
+        <textarea id="task" rows="3" placeholder="Enter the task"></textarea>
+      
+        <label for="due-date">Due Date</label>
+        <input type="date" id="due-date" />
+      
         <button onclick="assignTask()">Assign Task</button>
+      
         <div id="assigned-tasks">
-            <h4>Tasks Assigned</h4>
-            <!-- Display assigned tasks here -->
+          <h4>Tasks Assigned</h4>
+          <label for="filter-tasks">Filter by Student Email</label>
+          <input type="email" id="filter-tasks" placeholder="Enter student email" />
+          <button onclick="filterTasks()">Filter</button>
+          <div id="filtered-tasks"></div>
         </div>
-    </div>    
+    </div>      
     <div id="gradebook-section">
         <h3>Gradebook</h3>
         <label for="grade-student-email">Student Email</label>
@@ -60,7 +66,10 @@
       
         <div id="gradebook">
           <h4>Grades Assigned</h4>
-          <!-- Grades will be displayed here -->
+          <label for="filter-grades">Filter by Classroom Code</label>
+          <input type="text" id="filter-grades" placeholder="Enter classroom code" />
+          <button onclick="filterGrades()">Filter</button>
+          <div id="filtered-grades"></div>
         </div>
     </div>      
 </body>
