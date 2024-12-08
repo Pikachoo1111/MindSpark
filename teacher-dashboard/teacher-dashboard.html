@@ -5,14 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teacher Dashboard</title>
     <link rel="stylesheet" href="teacher-dashboard.css">
+
 </head>
 <body>
     <div class="dashboard-container">
         <h1>Welcome, Teacher!</h1>
         <div class="button-container">
-            <button onclick="createClassroom()">Create Classroom</button>
-            <button onclick="openLessonPlanner()">Lesson Planner</button>
-            <button onclick="openGradebook()">Gradebook</button>
+            <button id="create-classroom-button">Create Classroom</button>
+            <a href = "lesson-planner/lesson-planner.html"><button id="lesson-planner-button">Lesson Planner</button></a>
+            <button id="gradebook-button">Gradebook</button>
         </div>
         <div id="classrooms">
             <h3>Your Classrooms</h3>
@@ -22,11 +23,6 @@
         <input type="text" id="new-todo" placeholder="Add a task">
         <button onclick="addStudentTodo()">Add To-Do</button>
     </div>
-    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
-    <script src="../firebase.js"></script>
-    <script src="teacher-dashboard.js"></script>
     <div id="todo-section">
         <h3>Assign To-Do List</h3>
         <label for="student-email">Student Email: </label>
@@ -62,6 +58,11 @@
           <h4>Grades Assigned</h4>
           <!-- Grades will be displayed here -->
         </div>
-    </div>      
+    </div>   
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
+    <script src="../firebase.js"></script>
+    <script src="teacher-dashboard.js"></script>   
 </body>
 </html>

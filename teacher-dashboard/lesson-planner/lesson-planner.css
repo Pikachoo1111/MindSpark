@@ -3,20 +3,25 @@ body {
     margin: 20px;
     background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,0,255,1) 0%, rgba(0,212,255,1) 90%);
 }
-form {
+
+form, #returnContentDiv {
     max-width: 500px;
     margin: auto;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background: #fff;
+    box-sizing: border-box;
+    margin-bottom: 10px; /* Adds space between form and returnContentDiv */
 }
+
 label {
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
     margin: 5 auto;
 }
+
 input, textarea, select {
     width: 100%;
     padding: 8px;
@@ -25,6 +30,7 @@ input, textarea, select {
     border-radius: 4px;
     margin: 5 auto;
 }
+
 button {
     padding: 10px 15px;
     background-color: #28a745;
@@ -34,16 +40,33 @@ button {
     cursor: pointer;
     display: block;
     margin: 0 auto;
-
 }
+
 button:hover {
     background-color: #218838;
 }
+
 h1 {
     text-align: center;
-
-    /* width: 50%; Adjust width as needed */
-
     margin: 5 auto;
     color: white;
+}
+
+/* Styling for the returnContentDiv and form to ensure equal width and 10px space between them */
+#returnContentDiv, form {
+    width: calc(100% - 40px); /* Ensures equal width for both */
+    margin: 10px auto; /* 10px margin between the form and returnContentDiv */
+}
+
+/* Styling for the article inside returnContentDiv */
+#returnContentDiv article {
+    white-space: pre-wrap; /* To allow wrapping of long lines */
+    word-wrap: break-word; /* To break words if necessary */
+    background-color: #f7f7f7; /* Light background for content */
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-family: Arial, sans-serif; /* Ensures the same font */
+    font-size: 16px; /* Same font size as the input fields */
+    color: #333; /* Same text color */
 }

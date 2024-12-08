@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <link rel="stylesheet" href="lesson-planner.css">
     <title>Lesson Planner</title>
 </head>
 <body>
-    <h1>Lesson Planner</h1>
+    <h1 id = "heading">Lesson Planner</h1>
     <form>
         <label for="lesson-name">Lesson Name</label>
         <input type="text" id="lesson-name" name="lesson-name" required>
@@ -36,8 +37,13 @@
             <option value="12">12th Grade</option>
         </select>
 
-        <button type="submit" onClick="generateContent()">Submit</button>
+        <button type="button" onClick="generateContent()">Generate</button>
     </form>
+    <div id="returnContentDiv">
+        <article id="returnContent">Enter contents and click generate to see the magic happen!</article>
+    </div>
+    <script type="module" src="https://md-block.verou.me/md-block.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src = "lesson-planner.js"></script>
 </body>
 </html>

@@ -1,5 +1,9 @@
+const GOOGLE_API_KEY = "AIzaSyD_8BEHPanW5N2sqoxPHQNyK36fpFSPn-E";
+const API_REQUEST_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${GOOGLE_API_KEY}`;
+
 async function generateContent() {
-    // Collect form input
+    // Collect form inputc
+    console.log("Generating lesson content...");
     const lessonName = document.getElementById("lesson-name").value.trim();
     const lessonObjective = document.getElementById("lesson-objective").value.trim();
     const lessonDuration = document.getElementById("lesson-duration").value.trim();
@@ -11,126 +15,50 @@ async function generateContent() {
         return;
     }
 
-    // Prepare OpenAI prompt
-    const inputPrompt = `Generate a lesson called "${lessonName}" for grade ${lessonGrade} that lasts ${lessonDuration} minutes. The objective of the lesson is to ${lessonObjective}. Please generate nothing except for the lesson itself, no header or footer text at all. Just start with the lesson title and continue with the content.`;
-
-    // Fetch lesson content from OpenAI
-    try {
-        const lessonContent = await fetchOpenAIResponse(inputPrompt);
-        if (lessonContent) {
-            console.log("Generated Lesson Content:", lessonContent);
-            saveLessonToFirestore(lessonName, lessonObjective, lessonDuration, lessonGrade, lessonContent);
-            alert("Lesson created and saved successfully!");
-        } else {
-            alert("Failed to generate lesson content.");
-        }
-    } catch (error) {
-        console.error("Error generating lesson content:", error);
-        alert("An error occurred while generating lesson content. Please try again later.");
-    }
+    // Prepare Gemini prompt
+    document.getElementById("returnContent").innerHTML = "Loading...";
+    const inputPrompt = `Generate a lesson called "${lessonName}" for grade ${lessonGrade} that lasts ${lessonDuration} minutes. The objective of the lesson is to ${lessonObjective}. Please generate nothing except for the lesson itself, no header or footer text at all. Use absolutely no astreick in your answer, even to provide formatting I need this in plain text. This means no markdown, nothing`;
+    const output = await generateGeminiResponse(inputPrompt);
+    const moddedOutput = output.replace(/\*\*/g, "");
+    document.getElementById("returnContent").innerHTML = moddedOutput;
+    console.log(moddedOutput);
+    
 }
-
-async function fetchOpenAIResponse(prompt) {
-    const apiKey = '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'; // Replace with your actual OpenAI API key
-    const apiUrl = 'https://api.openai.com/v1/chat/completions';
-
-    const requestBody = {
-        model: "gpt-3.5-turbo", // Model selection
-        messages: [{ role: "user", content: prompt }],
-        max_tokens: 2800, // Adjust based on your needs
-        temperature: 0.7, // Creativity level
-    };
+// Fetch lesson content from Gemini
+const generateGeminiResponse = async (prompt) => {
+    // const prompt = "What is your favorite color?";
+    let responseText = null;
+    console.log("Fetching Gemini API response...");
 
     try {
-        const response = await fetch(apiUrl, {
+        const response = await fetch(API_REQUEST_URL, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${apiKey}`,
-            },
-            body: JSON.stringify(requestBody),
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                contents: [{ role: "user", parts: [{ text: prompt }] }]
+            }),
         });
 
-        if (response.ok) {
+        // Check if the response is OK (status 200–299)
+        if (!response.ok) {
             const data = await response.json();
-            return data.choices[0].message.content;
-        } else {
-            console.error(`API Error: ${response.status} - ${response.statusText}`);
-            return null;
+            throw new Error(data.error.message || "API request failed.");
         }
+
+        const responseData = await response.json();
+        // Extract the response text from the API response
+        responseText = responseData?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+        if (!responseText) throw new Error("Invalid API response.");
+
+        console.log("Success!");
+        console.log(responseText);
+
     } catch (error) {
-        console.error("Error connecting to OpenAI API:", error);
-        return null;
+        console.error("Error fetching Gemini API response:", error.message);
+        responseText = `Error: ${error.message}`;
     }
-}
-
-// Save lesson to Firestore
-async function saveLessonToFirestore(name, objective, duration, grade, content) {
-    const teacherEmail = auth.currentUser.email; // Get the current teacher's email
-
-    try {
-        await db.collection("lessons").add({
-            teacher: teacherEmail,
-            name,
-            objective,
-            duration,
-            grade,
-            content,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        });
-        console.log("Lesson saved successfully!");
-    } catch (error) {
-        console.error("Error saving lesson to Firestore:", error);
-    }
-}
-
-// Fetch and display lessons for the teacher
-async function displayTeacherLessons() {
-    const teacherEmail = auth.currentUser.email; // Get the current teacher's email
-    const lessonsDiv = document.getElementById("saved-lessons");
-    lessonsDiv.innerHTML = "<h3>My Lessons</h3>";
-
-    try {
-        const querySnapshot = await db.collection("lessons").where("teacher", "==", teacherEmail).get();
-        querySnapshot.forEach((doc) => {
-            const lesson = doc.data();
-            const lessonDiv = document.createElement("div");
-            lessonDiv.className = "lesson-card";
-            lessonDiv.innerHTML = `
-                <h4>${lesson.name}</h4>
-                <p><strong>Grade:</strong> ${lesson.grade}</p>
-                <p><strong>Duration:</strong> ${lesson.duration} minutes</p>
-                <p><strong>Objective:</strong> ${lesson.objective}</p>
-                <button onclick="viewLesson('${doc.id}')">View Lesson</button>
-            `;
-            lessonsDiv.appendChild(lessonDiv);
-        });
-    } catch (error) {
-        console.error("Error fetching lessons:", error);
-    }
-}
-
-// View a specific lesson
-async function viewLesson(lessonId) {
-    try {
-        const lessonDoc = await db.collection("lessons").doc(lessonId).get();
-        if (lessonDoc.exists) {
-            const lesson = lessonDoc.data();
-            alert(`Lesson Content:\n\n${lesson.content}`);
-        } else {
-            alert("Lesson not found.");
-        }
-    } catch (error) {
-        console.error("Error viewing lesson:", error);
-    }
-}
-
-// Initialize the lessons display when the page loads
-auth.onAuthStateChanged((user) => {
-    if (user) {
-        displayTeacherLessons();
-    } else {
-        window.location.href = "../../signin/signin.html"; // Redirect to login if not authenticated
-    }
-});
+    console.log(typeof responseText)
+    return responseText;
+};
 

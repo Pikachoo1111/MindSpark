@@ -1,5 +1,8 @@
 import { auth, db } from '../firebase';
 
+// document.getElementById("create-classroom-button").addEventListener("click", createClassroom);
+// document.getElementById("lesson-planner-button").addEventListener("click", openLessonPlanner);
+// document.getElementById("gradebook-button").addEventListener("click", openGradebook);
 
 // Function to create a classroom
 async function createClassroom() {
@@ -13,7 +16,7 @@ async function createClassroom() {
   const teacher = auth.currentUser.email; // Get the logged-in teacher's email
   const studentsInput = prompt("Enter student emails separated by commas (optional):");
   const students = studentsInput ? studentsInput.split(",").map(email => email.trim()).filter(email => email) : [];
-
+  
   try {
       // Add classroom to Firestore
       await db.collection('classrooms').add({
@@ -65,17 +68,16 @@ auth.onAuthStateChanged((user) => {
 });
 
 
-function openGradebook() {
-  window.location.href = "../gradebook/gradebook.html";
-}
 
-//please dont edit path, is working
+
+
 function openLessonPlanner() {
+  console.log("Opening lesson planner...");
   window.location.href = "../teacher-dashboard/lesson-planner/lesson-planner.html";
 }
 
-function generateUniqueCode() {
-  return Math.random().toString(36).substr(2, 8).toUpperCase();
+function openGradebook() {
+  window.location.href = "../gradebook/gradebook.html";
 }
 
 function addStudentTodo() {
