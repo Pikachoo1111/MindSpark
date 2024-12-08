@@ -132,56 +132,111 @@ function populateStudentSelect() {
   });
 }
 // Assign a task to a student with a due date
+// Function to assign a task
 async function assignTask() {
-  const studentEmail = document.getElementById('student-email').value.trim();
-  const taskDescription = document.getElementById('task').value.trim();
-  const dueDate = document.getElementById('due-date').value;
+  const studentEmail = document.getElementById("student-email").value.trim();
+  const taskDescription = document.getElementById("task").value.trim();
+  const dueDate = document.getElementById("due-date").value;
 
   if (!studentEmail || !taskDescription || !dueDate) {
-      alert("Please fill out all fields.");
-      return;
+    alert("Please fill out all fields before assigning a task.");
+    return;
   }
 
-  const teacherEmail = auth.currentUser.email; // Authenticated teacher's email
+  const teacherEmail = auth.currentUser?.email; // Authenticated teacher's email
+  if (!teacherEmail) {
+    alert("You must be logged in to assign a task.");
+    return;
+  }
 
   try {
-      await db.collection('todos').add({
-          task: taskDescription,
-          assignedBy: teacherEmail,
-          student: studentEmail,
-          dueDate,
-          completed: false,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      });
-      alert("Task assigned successfully!");
-      displayAssignedTasks(); // Refresh the assigned tasks list
+    await db.collection("todos").add({
+      task: taskDescription,
+      assignedBy: teacherEmail,
+      student: studentEmail,
+      dueDate,
+      completed: false,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+    alert("Task assigned successfully!");
+    displayAssignedTasks(); // Refresh task list
   } catch (error) {
-      console.error("Error assigning task:", error);
+    console.error("Error assigning task:", error);
+    alert("Failed to assign task. Please try again.");
   }
 }
 
 // Display tasks assigned by the teacher
 async function displayAssignedTasks() {
-  const teacherEmail = auth.currentUser.email; // Authenticated teacher's email
-  const assignedTasksDiv = document.getElementById('assigned-tasks');
+  const teacherEmail = auth.currentUser?.email;
+  const assignedTasksDiv = document.getElementById("assigned-tasks");
   assignedTasksDiv.innerHTML = "<h4>Tasks Assigned</h4>";
 
   try {
-      const querySnapshot = await db.collection('todos')
-          .where('assignedBy', '==', teacherEmail)
-          .get();
+    const querySnapshot = await db.collection("todos")
+      .where("assignedBy", "==", teacherEmail)
+      .get();
 
-      querySnapshot.forEach((doc) => {
-          const task = doc.data();
-          const div = document.createElement('div');
-          div.className = "task-item";
-          div.textContent = `${task.task} (Due: ${task.dueDate}, Assigned to: ${task.student}, Completed: ${task.completed ? "Yes" : "No"})`;
-          assignedTasksDiv.appendChild(div);
-      });
+    if (querySnapshot.empty) {
+      assignedTasksDiv.innerHTML += "<p>No tasks assigned yet.</p>";
+      return;
+    }
+
+    querySnapshot.forEach((doc) => {
+      const task = doc.data();
+      const div = document.createElement("div");
+      div.className = "task-item";
+      div.innerHTML = `
+        <p><strong>Task:</strong> ${task.task}</p>
+        <p><strong>Student:</strong> ${task.student}</p>
+        <p><strong>Due Date:</strong> ${task.dueDate}</p>
+        <p><strong>Completed:</strong> ${task.completed ? "Yes" : "No"}</p>
+      `;
+      assignedTasksDiv.appendChild(div);
+    });
   } catch (error) {
-      console.error("Error fetching assigned tasks:", error);
+    console.error("Error fetching assigned tasks:", error);
+    alert("Failed to fetch assigned tasks. Please try again.");
   }
 }
+
+// Filter tasks by student email
+async function filterTasks() {
+  const studentEmail = document.getElementById("filter-tasks").value.trim();
+  const filteredTasksDiv = document.getElementById("filtered-tasks");
+  filteredTasksDiv.innerHTML = "";
+
+  if (!studentEmail) {
+    alert("Please enter a student email to filter.");
+    return;
+  }
+
+  try {
+    const querySnapshot = await db.collection("todos")
+      .where("student", "==", studentEmail)
+      .get();
+
+    if (querySnapshot.empty) {
+      filteredTasksDiv.innerHTML = "<p>No tasks found for this student.</p>";
+      return;
+    }
+
+    querySnapshot.forEach((doc) => {
+      const task = doc.data();
+      const div = document.createElement("div");
+      div.className = "filtered-task-item";
+      div.innerHTML = `
+        <p><strong>Task:</strong> ${task.task}</p>
+        <p><strong>Due Date:</strong> ${task.dueDate}</p>
+        <p><strong>Completed:</strong> ${task.completed ? "Yes" : "No"}</p>
+      `;
+      filteredTasksDiv.appendChild(div);
+    });
+  } catch (error) {
+    console.error("Error filtering tasks:", error);
+  }
+}
+
 
 // Notify teacher of completed tasks
 function setupCompletionNotifications() {
@@ -211,34 +266,25 @@ auth.onAuthStateChanged((user) => {
   }
 });
 
+// Assign a grade
 async function assignGrade() {
   const studentEmail = document.getElementById("grade-student-email").value.trim();
   const classroomCode = document.getElementById("grade-classroom").value.trim();
   const assignment = document.getElementById("grade-assignment").value.trim();
   const grade = document.getElementById("grade").value.trim();
 
-  // Validate inputs
   if (!studentEmail || !classroomCode || !assignment || !grade) {
     alert("Please fill out all fields before assigning a grade.");
     return;
   }
 
-  const teacherEmail = auth.currentUser?.email; // Get authenticated teacher's email
+  const teacherEmail = auth.currentUser?.email;
   if (!teacherEmail) {
     alert("You must be logged in to assign a grade.");
     return;
   }
 
   try {
-    console.log("Assigning grade with the following details:", {
-      student: studentEmail,
-      classroom: classroomCode,
-      assignment,
-      grade,
-      gradedBy: teacherEmail,
-    });
-
-    // Add grade to Firestore
     await db.collection("grades").add({
       student: studentEmail,
       classroom: classroomCode,
@@ -247,23 +293,17 @@ async function assignGrade() {
       gradedBy: teacherEmail,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     });
-
     alert("Grade assigned successfully!");
-    displayGradebook(); // Refresh the gradebook
+    displayGradebook(); // Refresh gradebook
   } catch (error) {
     console.error("Error assigning grade:", error);
     alert("Failed to assign grade. Please try again.");
   }
 }
 
-// Function to display grades assigned by the teacher
+// Display grades assigned by the teacher
 async function displayGradebook() {
-  const teacherEmail = auth.currentUser?.email; // Get authenticated teacher's email
-  if (!teacherEmail) {
-    alert("You must be logged in to view the gradebook.");
-    return;
-  }
-
+  const teacherEmail = auth.currentUser?.email;
   const gradebookDiv = document.getElementById("gradebook");
   gradebookDiv.innerHTML = "<h4>Grades Assigned</h4>";
 
@@ -286,6 +326,8 @@ async function displayGradebook() {
         <p><strong>Classroom:</strong> ${grade.classroom}</p>
         <p><strong>Assignment:</strong> ${grade.assignment}</p>
         <p><strong>Grade:</strong> ${grade.grade}</p>
+        <button onclick="editGrade('${doc.id}', '${grade.grade}')">Edit</button>
+        <button onclick="deleteGrade('${doc.id}')">Delete</button>
       `;
       gradebookDiv.appendChild(div);
     });
@@ -295,11 +337,69 @@ async function displayGradebook() {
   }
 }
 
-// Initialize the gradebook section when the page loads
-auth.onAuthStateChanged((user) => {
-  if (user) {
-    displayGradebook();
-  } else {
-    window.location.href = "../../signin/signin.html"; // Redirect if not authenticated
+// Filter grades by classroom code
+async function filterGrades() {
+  const classroomCode = document.getElementById("filter-grades").value.trim();
+  const filteredGradesDiv = document.getElementById("filtered-grades");
+  filteredGradesDiv.innerHTML = "";
+
+  if (!classroomCode) {
+    alert("Please enter a classroom code to filter.");
+    return;
   }
-});
+
+  try {
+    const querySnapshot = await db.collection("grades")
+      .where("classroom", "==", classroomCode)
+      .get();
+
+    if (querySnapshot.empty) {
+      filteredGradesDiv.innerHTML = "<p>No grades found for this classroom.</p>";
+      return;
+    }
+
+    querySnapshot.forEach((doc) => {
+      const grade = doc.data();
+      const div = document.createElement("div");
+      div.className = "filtered-grade-item";
+      div.innerHTML = `
+        <p><strong>Student:</strong> ${grade.student}</p>
+        <p><strong>Assignment:</strong> ${grade.assignment}</p>
+        <p><strong>Grade:</strong> ${grade.grade}</p>
+      `;
+      filteredGradesDiv.appendChild(div);
+    });
+  } catch (error) {
+    console.error("Error filtering grades:", error);
+  }
+}
+
+// Edit a grade
+async function editGrade(gradeId, currentGrade) {
+  const newGrade = prompt("Enter the new grade:", currentGrade);
+  if (!newGrade) {
+    alert("Grade update canceled.");
+    return;
+  }
+
+  try {
+    await db.collection("grades").doc(gradeId).update({ grade: newGrade });
+    alert("Grade updated successfully!");
+    displayGradebook();
+  } catch (error) {
+    console.error("Error updating grade:", error);
+  }
+}
+
+// Delete a grade
+async function deleteGrade(gradeId) {
+  if (!confirm("Are you sure you want to delete this grade?")) return;
+
+  try {
+    await db.collection("grades").doc(gradeId).delete();
+    alert("Grade deleted successfully!");
+    displayGradebook();
+  } catch (error) {
+    console.error("Error deleting grade:", error);
+  }
+}
