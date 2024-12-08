@@ -42,5 +42,26 @@
             <!-- Display assigned tasks here -->
         </div>
     </div>    
+    <div id="gradebook-section">
+        <h3>Gradebook</h3>
+        <label for="grade-student-email">Student Email</label>
+        <input type="email" id="grade-student-email" placeholder="Enter student's email" />
+      
+        <label for="grade-classroom">Classroom Code</label>
+        <input type="text" id="grade-classroom" placeholder="Enter classroom code" />
+      
+        <label for="grade-assignment">Assignment</label>
+        <input type="text" id="grade-assignment" placeholder="Enter assignment name" />
+      
+        <label for="grade">Grade</label>
+        <input type="text" id="grade" placeholder="Enter grade (e.g., A, B+, 95%)" />
+      
+        <button onclick="assignGrade()">Assign Grade</button>
+      
+        <div id="gradebook">
+          <h4>Grades Assigned</h4>
+          <!-- Grades will be displayed here -->
+        </div>
+    </div>      
 </body>
 </html>

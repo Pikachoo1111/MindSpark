@@ -208,3 +208,96 @@ auth.onAuthStateChanged((user) => {
       window.location.href = "../../signin/signin.html"; // Redirect if not authenticated
   }
 });
+
+async function assignGrade() {
+  const studentEmail = document.getElementById("grade-student-email").value.trim();
+  const classroomCode = document.getElementById("grade-classroom").value.trim();
+  const assignment = document.getElementById("grade-assignment").value.trim();
+  const grade = document.getElementById("grade").value.trim();
+
+  // Validate inputs
+  if (!studentEmail || !classroomCode || !assignment || !grade) {
+    alert("Please fill out all fields before assigning a grade.");
+    return;
+  }
+
+  const teacherEmail = auth.currentUser?.email; // Get authenticated teacher's email
+  if (!teacherEmail) {
+    alert("You must be logged in to assign a grade.");
+    return;
+  }
+
+  try {
+    console.log("Assigning grade with the following details:", {
+      student: studentEmail,
+      classroom: classroomCode,
+      assignment,
+      grade,
+      gradedBy: teacherEmail,
+    });
+
+    // Add grade to Firestore
+    await db.collection("grades").add({
+      student: studentEmail,
+      classroom: classroomCode,
+      assignment,
+      grade,
+      gradedBy: teacherEmail,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+
+    alert("Grade assigned successfully!");
+    displayGradebook(); // Refresh the gradebook
+  } catch (error) {
+    console.error("Error assigning grade:", error);
+    alert("Failed to assign grade. Please try again.");
+  }
+}
+
+// Function to display grades assigned by the teacher
+async function displayGradebook() {
+  const teacherEmail = auth.currentUser?.email; // Get authenticated teacher's email
+  if (!teacherEmail) {
+    alert("You must be logged in to view the gradebook.");
+    return;
+  }
+
+  const gradebookDiv = document.getElementById("gradebook");
+  gradebookDiv.innerHTML = "<h4>Grades Assigned</h4>";
+
+  try {
+    const querySnapshot = await db.collection("grades")
+      .where("gradedBy", "==", teacherEmail)
+      .get();
+
+    if (querySnapshot.empty) {
+      gradebookDiv.innerHTML += "<p>No grades assigned yet.</p>";
+      return;
+    }
+
+    querySnapshot.forEach((doc) => {
+      const grade = doc.data();
+      const div = document.createElement("div");
+      div.className = "grade-item";
+      div.innerHTML = `
+        <p><strong>Student:</strong> ${grade.student}</p>
+        <p><strong>Classroom:</strong> ${grade.classroom}</p>
+        <p><strong>Assignment:</strong> ${grade.assignment}</p>
+        <p><strong>Grade:</strong> ${grade.grade}</p>
+      `;
+      gradebookDiv.appendChild(div);
+    });
+  } catch (error) {
+    console.error("Error fetching gradebook:", error);
+    alert("Failed to fetch the gradebook. Please try again.");
+  }
+}
+
+// Initialize the gradebook section when the page loads
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    displayGradebook();
+  } else {
+    window.location.href = "../../signin/signin.html"; // Redirect if not authenticated
+  }
+});

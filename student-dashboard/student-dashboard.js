@@ -113,3 +113,49 @@ auth.onAuthStateChanged((user) => {
     window.location.href = '../../signin/signin.html'; // Redirect if not authenticated
   }
 });
+
+async function displayStudentGrades() {
+  const studentEmail = auth.currentUser?.email; // Get authenticated student's email
+  if (!studentEmail) {
+    alert("You must be logged in to view your grades.");
+    return;
+  }
+
+  const gradesDiv = document.getElementById("student-grades");
+  gradesDiv.innerHTML = "<h3>My Grades</h3>";
+
+  try {
+    const querySnapshot = await db.collection("grades")
+      .where("student", "==", studentEmail)
+      .get();
+
+    if (querySnapshot.empty) {
+      gradesDiv.innerHTML += "<p>No grades available yet.</p>";
+      return;
+    }
+
+    querySnapshot.forEach((doc) => {
+      const grade = doc.data();
+      const div = document.createElement("div");
+      div.className = "grade-item";
+      div.innerHTML = `
+        <p><strong>Classroom:</strong> ${grade.classroom}</p>
+        <p><strong>Assignment:</strong> ${grade.assignment}</p>
+        <p><strong>Grade:</strong> ${grade.grade}</p>
+      `;
+      gradesDiv.appendChild(div);
+    });
+  } catch (error) {
+    console.error("Error fetching grades:", error);
+    alert("Failed to fetch grades. Please try again.");
+  }
+}
+
+// Initialize the student grades section when the page loads
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    displayStudentGrades();
+  } else {
+    window.location.href = "../../signin/signin.html"; // Redirect if not authenticated
+  }
+});
