@@ -1,46 +1,69 @@
 import { auth, db } from '../firebase';
 
-function createClassroom() {
+
+// Function to create a classroom
+async function createClassroom() {
   const name = prompt("Enter classroom name:");
   if (!name) {
-    alert("Classroom name cannot be empty.");
-    return;
+      alert("Classroom name cannot be empty.");
+      return;
   }
 
   const code = generateUniqueCode();
-  const teacher = auth.currentUser.email; // Get current teacher email
+  const teacher = auth.currentUser.email; // Get the logged-in teacher's email
+  const studentsInput = prompt("Enter student emails separated by commas (optional):");
+  const students = studentsInput ? studentsInput.split(",").map(email => email.trim()).filter(email => email) : [];
 
-  // Upload classroom data to Firestore
-  uploadClassroom(teacher, name, code)
-    .then(() => {
+  try {
+      // Add classroom to Firestore
+      await db.collection('classrooms').add({
+          name,
+          code,
+          teacher,
+          students,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
       alert(`Classroom "${name}" created successfully! Code: ${code}`);
-      displayClassrooms();
-    })
-    .catch((error) => {
+      displayClassrooms(); // Refresh the list of classrooms
+  } catch (error) {
       console.error("Error creating classroom:", error);
-    });
+      alert("Failed to create classroom. Please try again.");
+  }
 }
 
-function displayClassrooms() {
-  const teacher = auth.currentUser.email; // Authenticated teacher email
+// Function to display classrooms created by the teacher
+async function displayClassrooms() {
+  const teacher = auth.currentUser.email; // Get the logged-in teacher's email
   const classroomsDiv = document.getElementById("classrooms");
   classroomsDiv.innerHTML = "<h3>Your Classrooms</h3>";
 
-  db.collection("classrooms")
-    .where("teacher", "==", teacher)
-    .get()
-    .then((querySnapshot) => {
+  try {
+      const querySnapshot = await db.collection('classrooms').where('teacher', '==', teacher).get();
       querySnapshot.forEach((doc) => {
-        const classroom = doc.data();
-        const div = document.createElement("div");
-        div.textContent = `${classroom.name} (Code: ${classroom.code})`;
-        classroomsDiv.appendChild(div);
+          const classroom = doc.data();
+          const div = document.createElement('div');
+          div.textContent = `${classroom.name} (Code: ${classroom.code}, Students: ${classroom.students.length})`;
+          classroomsDiv.appendChild(div);
       });
-    })
-    .catch((error) => {
+  } catch (error) {
       console.error("Error fetching classrooms:", error);
-    });
+  }
 }
+
+// Generate a unique classroom code
+function generateUniqueCode() {
+  return Math.random().toString(36).substr(2, 8).toUpperCase();
+}
+
+// Initialize the classrooms display when the dashboard loads
+auth.onAuthStateChanged((user) => {
+  if (user) {
+      displayClassrooms();
+  } else {
+      window.location.href = "../../signin/signin.html"; // Redirect to login if not authenticated
+  }
+});
+
 
 function openGradebook() {
   window.location.href = "../gradebook/gradebook.html";
