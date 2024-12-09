@@ -159,3 +159,44 @@ auth.onAuthStateChanged((user) => {
     window.location.href = "../../signin/signin.html"; // Redirect if not authenticated
   }
 });
+// Download grades as a CSV file
+async function downloadStudentGrades() {
+  const studentEmail = auth.currentUser?.email; // Authenticated student's email
+  if (!studentEmail) {
+    alert("You must be logged in to download your grades.");
+    return;
+  }
+
+  try {
+    // Fetch grades from Firestore
+    const querySnapshot = await db.collection("grades").where("student", "==", studentEmail).get();
+
+    if (querySnapshot.empty) {
+      alert("No grades available to download.");
+      return;
+    }
+
+    // Prepare data for CSV
+    const rows = [["Classroom", "Assignment", "Grade"]]; // CSV header
+    querySnapshot.forEach(doc => {
+      const grade = doc.data();
+      rows.push([grade.classroom, grade.assignment, grade.grade]);
+    });
+
+    // Convert data to CSV format
+    const csvContent = rows.map(row => row.join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+
+    // Create a link and download the CSV
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "my-grades.csv";
+    link.click();
+
+    alert("Your grades have been downloaded.");
+  } catch (error) {
+    console.error("Error downloading grades:", error);
+    alert("Failed to download grades. Please try again.");
+  }
+}
