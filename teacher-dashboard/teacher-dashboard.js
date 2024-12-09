@@ -43,8 +43,7 @@ async function createClassroom() {
 async function displayClassrooms() {
     const teacherEmail = auth.currentUser?.email;
     if (!teacherEmail) {
-        alert("You must be logged in to view classrooms.");
-        return;
+        displayClassrooms();
     }
 
     const classroomsDiv = document.getElementById("classrooms");
