@@ -1,6 +1,10 @@
-import { auth, db } from "../firebase";
-
 // Create a classroom
+const createClassroomButton = document.getElementById("create-classroom-button");
+createClassroomButton.addEventListener("click", async () => {
+    createClassroom();
+  });
+document.addEventListener("DOMContentLoaded", function() {displayClassrooms()});
+
 async function createClassroom() {
     const name = prompt("Enter classroom name:");
     if (!name) {
@@ -14,13 +18,9 @@ async function createClassroom() {
         : [];
 
     const teacherEmail = auth.currentUser?.email;
-    if (!teacherEmail) {
-        alert("You must be logged in to create a classroom.");
-        return;
-    }
 
     try {
-        const classroomCode = generateUniqueCode();
+        const classroomCode = Math.random().toString(36).slice(2).slice(0, 6);
         console.log("Creating classroom:", { name, code: classroomCode, teacher: teacherEmail, students });
 
         await db.collection("classrooms").add({
