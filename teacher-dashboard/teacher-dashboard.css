@@ -59,3 +59,38 @@ body {
   padding: 10px;
   border-bottom: 1px solid #ddd;
 }
+
+#animation {
+  width: 200px;
+  height: 200px;
+  background-color: rgb(80, 170, 255);
+  -webkit-animation: squareToCircle 2s 1s infinite alternate;
+}
+
+@-webkit-keyframes squareToCircle {
+    0% {
+      border-radius: 0 0 0 0;
+      background: rgb(80, 170, 255);
+      transform: rotate(0deg);
+    }
+    25% {
+      border-radius: 50% 0 0 0;
+      background: rgb(122, 161, 233);
+      transform: rotate(45deg);
+    }
+    50% {
+      border-radius: 50% 50% 0 0;
+      background: rgb(92, 122, 205);
+      transform: rotate(90deg);
+    }
+    75% {
+      border-radius: 50% 50% 50% 0;
+      background: rgb(80, 170, 255);
+      transform: rotate(135deg);
+    }
+    100% {
+      border-radius: 50% 50% 50% 50%;
+      background: rgb(122, 161, 233);
+      transform: rotate(180deg);
+    }
+}
