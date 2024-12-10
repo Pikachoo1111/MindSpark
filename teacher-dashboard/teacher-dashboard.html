@@ -6,7 +6,7 @@
     <title>Teacher Dashboard</title>
     <link rel="stylesheet" href="teacher-dashboard.css">
 </head>
-<body>
+<body><center>
     <div class="dashboard-container">
         <h1>Welcome, Teacher!</h1>
         <div class="button-container">
@@ -18,31 +18,29 @@
             <h3>Your Classrooms</h3>
         </div>
     </div>
-    <center>
+    
     <div id="todo-section">
-        <h3>Assign To-Do List</h3>
+        <h3 id="assign">Assign To-Do List</h3><hr>
         <label for="student-email">Student Email</label>
         <input type="email" id="student-email" placeholder="Enter student's email" />
-
+<br><br>
         <label for="task">Task</label>
-        <textarea id="task" rows="3" placeholder="Enter the task"></textarea>
-
+        <textarea id="task" rows="1" placeholder="Enter the task"></textarea>
+<br><br>
         <label for="due-date">Due Date</label>
         <input type="date" id="due-date" />
 
         <button onclick="assignTask()">Assign Task</button>
 
         <div id="assigned-tasks">
-          <h4>Tasks Assigned</h4>
+          <h4>Tasks Assigned</h4><hr>
           <label for="filter-tasks">Filter by Student Email</label>
           <input type="email" id="filter-tasks" placeholder="Enter student email" />
           <button onclick="filterTasks()">Filter</button>
           <div id="filtered-tasks"></div>
         </div>
-    </div> <br><br><br>
-    <div id="animation">
-    </div>
-</center>     
+    </div> 
+</center>  
     <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
