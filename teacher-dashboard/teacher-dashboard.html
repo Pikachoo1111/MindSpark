@@ -7,8 +7,11 @@
     <link rel="stylesheet" href="teacher-dashboard.css">
 </head>
 <body><center>
-    <div class="dashboard-container">
+    <div class = "heading" id="heading-div">
         <h1>Welcome, Teacher!</h1>
+    </div>
+    <div class="dashboard-container">
+        <img src="teacher-dashboard-image.png" alt="Teacher Dashboard Image" class="dashboard-image" id="dashboard-image">
         <div class="button-container">
             <button id="create-classroom-button">Create Classroom</button>
             <a href="lesson-planner/lesson-planner.html"><button id="lesson-planner-button">Lesson Planner</button></a>
@@ -20,7 +23,7 @@
     </div>
     
     <div id="todo-section">
-        <h3 id="assign">Assign To-Do List</h3><hr>
+        <h3 id="assign">Assign To-Do List</h3>
         <label for="student-email">Student Email</label>
         <input type="email" id="student-email" placeholder="Enter student's email" />
 <br><br>
@@ -30,13 +33,15 @@
         <label for="due-date">Due Date</label>
         <input type="date" id="due-date" />
 
-        <button onclick="assignTask()">Assign Task</button>
+    <div>
+        <button id = "assign-button" onclick="assignTask()">Assign Task</button>
+    </div>
 
         <div id="assigned-tasks">
-          <h4>Tasks Assigned</h4><hr>
+          <hr><h3>Tasks Assigned</h3>
           <label for="filter-tasks">Filter by Student Email</label>
           <input type="email" id="filter-tasks" placeholder="Enter student email" />
-          <button onclick="filterTasks()">Filter</button>
+          <button id = "filter-button" onclick="filterTasks()">Filter</button>
           <div id="filtered-tasks"></div>
         </div>
     </div> 

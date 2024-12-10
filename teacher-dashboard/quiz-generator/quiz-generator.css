@@ -1,0 +1,62 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 23px; /* 20px * 1.15 */
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,0,255,1) 0%, rgba(0,212,255,1) 90%);
+}
+
+form, #returnContentDiv, #answerKeyDiv {
+    width: 57.5%; /* 50% * 1.15 */
+    margin: 11.5px auto; /* 10px * 1.15 */
+    padding: 23px; /* 20px * 1.15 */
+    border: 1px solid #ccc;
+    border-radius: 5.75px; /* 5px * 1.15 */
+    background: #fff;
+    box-sizing: border-box;
+}
+
+label {
+    display: block;
+    margin-bottom: 9.2px; /* 8px * 1.15 */
+    font-weight: bold;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 9.2px; /* 8px * 1.15 */
+    margin-bottom: 11.5px; /* 10px * 1.15 */
+    border: 1px solid #ccc;
+    border-radius: 4.6px; /* 4px * 1.15 */
+}
+
+button {
+    padding: 11.5px 17.25px; /* 10px * 1.15 and 15px * 1.15 */
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4.6px; /* 4px * 1.15 */
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+h1 {
+    text-align: center;
+    color: white;
+}
+
+/* Styling for the article inside returnContentDiv and answerKeyDiv */
+#returnContentDiv article, #answerKeyDiv article {
+    white-space: pre-wrap; /* To allow wrapping of long lines */
+    word-wrap: break-word; /* To break words if necessary */
+    background-color: #f7f7f7; /* Light background for content */
+    padding: 11.5px; /* 10px * 1.15 */
+    border-radius: 4.6px; /* 4px * 1.15 */
+    border: 1px solid #ccc;
+    font-family: Arial, sans-serif; /* Ensures the same font */
+    font-size: 18.4px; /* 16px * 1.15 */
+    color: #333; /* Same text color */
+}

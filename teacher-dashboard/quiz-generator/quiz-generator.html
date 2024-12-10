@@ -4,23 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <link rel="stylesheet" href="lesson-planner.css">
-    <title>Lesson Planner</title>
+    <link rel="stylesheet" href="quiz-generator.css">
+    <title>Quiz Generator</title>
 </head>
 <body>
-    <h1 id = "heading">Lesson Planner</h1>
+    <h1 id = "heading">Quiz Generator</h1>
     <form>
-        <label for="lesson-name">Lesson Name</label>
-        <input type="text" id="lesson-name" name="lesson-name" required>
+        <label for="quiz-title">Quiz Title</label>
+        <input type="text" id="quiz-title" name="quiz-title" required>
 
-        <label for="lesson-objective">Lesson Objective</label>
-        <textarea id="lesson-objective" name="lesson-objective" rows="4" required></textarea>
+        <label for="quiz-specifications">Quiz Specifications</label>
+        <textarea id="quiz-specifications" name="quiz-specifications" rows="4" required></textarea>
 
-        <label for="lesson-duration">Lesson Duration (minutes)</label>
-        <input type="number" id="lesson-duration" name="lesson-duration" required>
+        <label for="num-questions">Number of questions</label>
+        <input type="number" id="num-questions" name="num-questions" required>
 
-        <label for="lesson-grade">Grade</label>
-        <select id="lesson-grade" name="lesson-grade" required>
+        <label for="quiz-grade">Grade</label>
+        <select id="quiz-grade" name="quiz-grade" required>
             <option value="">Select Grade</option>
             <option value="kindergarten">Kindergarten</option>
             <option value="1">1st Grade</option>
@@ -40,10 +40,13 @@
         <button type="button" onClick="generateContent()">Generate</button>
     </form>
     <div id="returnContentDiv">
-        <article id="returnContent">Fill out the text fields with the lesson specifications and watch the magic happen!</article>
+        <article id="returnContent">Enter contents and student version of the quiz will appear</article>
+    </div>
+    <div id="answerKeyDiv">
+        <article id="answerKey">Enter contents and the answer key will appear here!</article>
     </div>
     <script type="module" src="https://md-block.verou.me/md-block.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src = "lesson-planner.js"></script>
+    <script src = "quiz-generator.js"></script>
 </body>
 </html>

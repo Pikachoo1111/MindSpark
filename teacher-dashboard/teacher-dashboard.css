@@ -18,11 +18,11 @@ body {
   }
   
   button {
-    margin: 10px 0;
-    padding: 10px;
-    font-size: 16px;
+    margin: 15px 0;
+    padding: 15px;
+    font-size: 24px;
     border: none;
-    border-radius: 4px;
+    border-radius: 3px;
     cursor: pointer;
   }
   
@@ -40,16 +40,6 @@ body {
     width:50%;
 }
 
-@keyframes rainbow {
-  0% { color: red; }
-  14% { color: orange; }
-  28% { color: rgb(185, 185, 10); }
-  42% { color: green; }
-  57% { color: blue; }
-  71% { color: indigo; }
-  85% { color: violet; }
-  100% { color: red; }
-}
 
 #assign{
   animation: rainbow 3s infinite;
@@ -80,10 +70,62 @@ body {
 }
 
 
-textarea, input{
-  border-radius: 10px;
+textarea, input {
+  border-radius: 5px;
   border-color: black;
+  font-family: "Arial";
+  font-size: 1.25em; /* 1.5em (label font size) * 1.25 = 1.875em */
 }
-textarea{
+textarea {
   margin-top: 10px;
+}
+.dashboard-container, #todo-section, #heading-div {
+  width: 67.5%;
+}
+
+#gradebook-section {
+  width: 67.5%;
+}
+
+#dashboard-image {
+  display: block;
+  max-width: 56.25%;
+  height: auto;
+  margin: 25 auto;
+}
+h1 {
+  font-size: 3.5em;
+  color:blue;
+}
+#heading-div {
+  width: calc(67.5%); /* Increased width to make the box 200 times wider */
+  margin: 0 0 50px 0; /* Removed top and left margin, kept bottom margin */
+  padding: 0px 20px; /* Reduced padding to make the box less tall */
+  background-color: #fff;
+  border: 0px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0px 2px rgba(0, 0, 0, 0.1);
+  height: 12.5vh; /* Shrink down the height of the box by 200 percent */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+h3 {
+  font-size: 2.5em;
+  color:blue;
+}
+label {
+  font-size: 1.5em;
+  color:black;
+}
+
+p {
+  font-size: 10em;
+  color:black;
+}
+
+#assign-button, #filter-button {
+  font-size: 1em;
+  padding: 5px 8px;
 }
