@@ -1,6 +1,5 @@
-import { auth, db } from '../firebase';
-
 // Join a classroom
+const studentEmail = auth.currentUser.email; // Authenticated student's email
 async function joinClassroom() {
   const code = document.getElementById('classroomCode').value.trim();
   if (!code) {
@@ -8,7 +7,7 @@ async function joinClassroom() {
     return;
   }
 
-  const studentEmail = auth.currentUser.email; // Authenticated student's email
+  
 
   try {
     // Find the classroom with the provided code
