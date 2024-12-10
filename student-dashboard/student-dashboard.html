@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student   
- Dashboard</title>
+    <title>Student Dashboard</title>
     <link rel="stylesheet" href="student-dashboard.css">
 </head>
 <body>
     <div class="dashboard-container">   
 
         <h1>Welcome, Student!</h1>
-        <input type="text" id="classroomCode" placeholder="Enter Classroom Code">
-        <button onclick="joinClassroom()">Join Classroom</button>
-        <div id="reminders">
+        <span>
+          <input type="text" id="classroomCode" placeholder="Enter Classroom Code">
+          <button onclick="joinClassroom()" id = "joinClassroom">Join Classroom</button>
+        </span>
+          <div id="reminders">
             <h3>Your Classrooms</h3>
         </div>
-        <h2>Your To-Do List</h2>
+        <!-- <h2>Your To-Do List</h2> -->
         <ul id="student-todo-list"></ul>
     </div>
     <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
@@ -25,14 +26,14 @@
     <script src="../firebase.js"></script>
     <script src="student-dashboard.js"></script>
     <div id="todo-section">
-        <h3>My To-Do List</h3>
+        <!-- <h3>My To-Do List</h3> -->
         <div id="todo-list">
             <div class="todo-item"
               <label>
                 <input type="checkbox">
                 <span><strong>Task 1:</strong> Anatomy Diagram</span>
               </label>
-              <p><strong>Assigned By:</strong> armaan30312@gmail.com</p>
+              <p><strong>Assigned By:</strong> kanavsah@gmail.com</p>
               <p><strong>Created At:</strong> Dec 8, 2024</p>
             </div>
             <hr>
@@ -42,45 +43,45 @@
                 <span>Task 2: Review notes</span>
               </label>
               <p><strong>Assigned By:</strong> olorajoel@gmail.com</p>
-              <p><strong>Created At:</strong> Dec 9, 2024</p>
+              <p><strong>Created At:</strong> Dec 8, 2024</p>
             </div><hr>
             <div class="todo-item">
                 <label>
                   <input type="checkbox">
                   <span>Task 3: Math Homework </span>
                 </label>
-                <p><strong>Assigned By:</strong> kanavsah@gmail.com</p>
+                <p><strong>Assigned By:</strong> armaan30312@gmail.com</p>
                 <p><strong>Created At:</strong> Dec 9, 2024</p>
               </div>
           </div>
           
     </div>
     <div id="student-gradebook">
-        <h3>My Grades</h3>
+        <!-- <h3>My Grades</h3> -->
         <div id="student-grades">
           <div class="student-grade">
             <label>
-              <span> 98%: Cellular respiration practice problems </span>
+              <span> 98%: Cellular Respiration Practice Problems </span>
             </label>
             <p><strong>Graded By:</strong> kanavsah@gmail.com</p>
-            <p><strong>turned At:</strong> Dec 7, 2024</p>
-            <p><strong>graded At:</strong> Dec 9, 2024</p>
+            <p><strong>Turned In:</strong> Dec 7, 2024</p>
+            <p><strong>Graded At:</strong> Dec 8, 2024</p>
           </div><hr>
           <div class="student-grade">
             <label>
-              <span> 76%: Newton's Laws worksheet and review </span>
+              <span> 76%: Newton's Laws Worksheet and Review </span>
             </label>
             <p><strong>Graded By:</strong> olorajoel@gmail.com</p>
-            <p><strong>turned At:</strong> Dec 7, 2024</p>
-            <p><strong>graded At:</strong> Dec 9, 2024</p>
+            <p><strong>Turned In:</strong> Dec 7, 2024</p>
+            <p><strong>Graded At:</strong> Dec 8, 2024</p>
           </div><hr>
           <div class="student-grade">
             <label>
-              <span> 0%: participation Grade for English </span>
+              <span> 0%: Participation Grade for English </span>
             </label>
             <p><strong>Graded By:</strong> armaan30312@gmail.com</p>
-            <p><strong>turned At:</strong> Dec 7, 2024</p>
-            <p><strong>graded At:</strong> Dec 9, 2024</p>
+            <p><strong>Turned In:</strong> Dec 7, 2024</p>
+            <p><strong>Graded At:</strong> Dec 9, 2024</p>
           </div>
           <!-- Grades will be displayed here -->
         </div>
