@@ -175,6 +175,7 @@ async function filterTasks() {
                 <p><strong>Task:</strong> ${task.task}</p>
                 <p><strong>Due Date:</strong> ${task.dueDate}</p>
                 <p><strong>Completed:</strong> ${task.completed ? "Yes" : "No"}</p>
+                <hr>
             `;
             filteredTasksDiv.appendChild(div);
         });
